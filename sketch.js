@@ -1,16 +1,35 @@
+var numBubbles = 50,
+    bubbles = [];
+
 function setup() {
   createCanvas(windowWidth,windowHeight);
+  for (var i = 0; i < numBubbles; i++) {
+    var bubble = new Bubble(random(0,500), random(0,500), random(10,50));
+    bubbles.push(bubble);
+  }
 }
 
 function draw() {
   background(0);
 
-  for (var x = 0; x < width; x += 30) {
-    for (var y = 0; y < height; y += 30) {
-      var glitter = random(0,255);
-      fill(190, 0, 255, glitter);
-      ellipse(x, y, 40, 40);
-    }
-  }
+  bubbles.forEach(function(bubble, index) {
+    bubble.display();
+    bubble.move();
+  });
 
 }
+
+function Bubble(x, y, diamater) {
+  this.x = x;
+  this.y = y;
+}
+
+Bubble.prototype.display = function(){
+  fill(255);
+  ellipse(this.x, this.y, 20, 20);
+};
+
+Bubble.prototype.move = function(){
+  this.x -= 1;
+  this.y -= 1;
+};
