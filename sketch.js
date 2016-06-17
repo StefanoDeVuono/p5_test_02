@@ -1,11 +1,11 @@
 var numBubbles = 50,
-    shapes = [];
+    shapes = [],
+    ellipseCursor = true;
 
 function setup() {
   createCanvas(windowWidth,windowHeight);
   noCursor();
-  ellipseMode(CENTER);
-  cursorDiameter = 10;
+  
   document.addEventListener('contextmenu', function(event){
     event.preventDefault();
   });
@@ -22,17 +22,28 @@ function draw() {
 
   if (mouseIsPressed){
     if (mouseButton === LEFT) {
+      ellipseCursor = true;
       shapes.push(new Circle(mouseX, mouseY, 255, 255, 255));
     }
     if (mouseButton === RIGHT) {
+      ellipseCursor = false;
       shapes.push(new Square(mouseX, mouseY, 255, 255, 255));
     }
   }
 
   stroke(0);
   fill(255);
-  ellipse(mouseX, mouseY , 10, 10);
 
+  cursory(mouseIsPressed, mouseButton);
+
+}
+
+function cursory(){
+  if (ellipseCursor) {
+    return ellipse(mouseX, mouseY, 10, 10);
+  } else {
+    return rect(mouseX, mouseY, 10, 10);
+  }
 }
 
 function Circle(x,y,r,g,b){
