@@ -1,35 +1,68 @@
 var numBubbles = 50,
-    bubbles = [];
+    shapes = [];
 
 function setup() {
   createCanvas(windowWidth,windowHeight);
-  for (var i = 0; i < numBubbles; i++) {
-    var bubble = new Bubble(random(0,500), random(0,500), random(10,50));
-    bubbles.push(bubble);
-  }
+  noCursor();
+  ellipseMode(CENTER);
+  cursorDiameter = 10;
+  document.addEventListener('contextmenu', function(event){
+    event.preventDefault();
+  });
 }
 
 function draw() {
-  background(0);
+  background(255);
+  for (var i = 0; i < shapes.length; i++) {
+    shapes[i].draw();
+    if (shapes[i].x > windowWidth) {
+      shapes.splice(i, 1);
+    }
+  }
 
-  bubbles.forEach(function(bubble, index) {
-    bubble.display();
-    bubble.move();
-  });
+  if (mouseIsPressed){
+    if (mouseButton === LEFT) {
+      shapes.push(new Circle(mouseX, mouseY, 255, 255, 255));
+    }
+    if (mouseButton === RIGHT) {
+      shapes.push(new Square(mouseX, mouseY, 255, 255, 255));
+    }
+  }
+
+  stroke(0);
+  fill(255);
+  ellipse(mouseX, mouseY , 10, 10);
 
 }
 
-function Bubble(x, y, diamater) {
+function Circle(x,y,r,g,b){
   this.x = x;
   this.y = y;
+  this.r = r;
+  this.g = g;
+  this.b = b;
+  this.size = 10;
 }
 
-Bubble.prototype.display = function(){
-  fill(255);
-  ellipse(this.x, this.y, 20, 20);
-};
+Circle.prototype.draw = function(){
+  this.x--;
+  this.size -= random(.5, 1);
+  fill(this.r, this.g, this.b);
+  ellipse(this.x, this.y, this.size, this.size);
+}
 
-Bubble.prototype.move = function(){
-  this.x -= 1;
-  this.y -= 1;
-};
+function Square(x,y,r,g,b){
+  this.x = x;
+  this.y = y;
+  this.r = r;
+  this.g = g;
+  this.b = b;
+  this.size = 10;
+}
+
+Square.prototype.draw = function(){
+  this.x++;
+  this.size -= random(.5, 1);
+  fill(this.r, this.g, this.b);
+  rect(this.x, this.y, this.size, this.size);
+}
